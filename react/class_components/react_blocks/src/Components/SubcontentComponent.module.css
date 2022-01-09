@@ -1,0 +1,11 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.subcontent{
+    width: 31.3%;
+    height: 300px;
+    background-color: #ffd966;
+}
