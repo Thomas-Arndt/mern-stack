@@ -28,6 +28,8 @@ class Unit extends Card{
         console.log(`Resilience: ${this.resilience}`);
         console.log("******************************");
     }
+
+
 }
 
 class Effect extends Card{
@@ -40,13 +42,8 @@ class Effect extends Card{
 
     applyEffect(target){
         console.log(`Playing ${this.name}...`);
-        if(target instanceof Unit){
-            if(this.stat==="power"){
-                target.power+=this.magnitude;
-            }
-            else if(this.stat==="resilience"){
-                target.resilience+=this.magnitude;
-            }
+        if(target instanceof Unit && this.stat in target){
+            target[this.stat]+=this.magnitude;
         }
     }
 }
