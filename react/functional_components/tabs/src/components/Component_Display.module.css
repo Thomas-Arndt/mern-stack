@@ -1,0 +1,14 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.displayBox{
+    width: 30%;
+    height: 200px;
+    border: 1px solid lightgrey;
+    margin: 10px auto 0 auto;
+    padding: 10px;
+    text-align: left;
+}
