@@ -22,13 +22,14 @@ const List = (props) => {
             <h3 className="text-center">To Do:</h3>
             {list.map( (item, i) =>
                 <div key={i} index={i} className="d-flex align-items-center justify-content-between mt-2 pb-2 border-bottom">
-                    {item.complete ? <h4 className="text-decoration-line-through text-secondary">{item.task}</h4> : <h4>{item.task}</h4>}
+                    {item.complete ? 
+                    <h4 className="text-decoration-line-through text-secondary">{item.task}</h4> : 
+                    <h4>{item.task}</h4>}
                     <div className="d-flex align-content-center gap-4">
                         <div className="d-flex align-items-center gap-2">
                             <input index={i} type="checkbox" checked={item.complete} onChange={handleChecked}/>
                             Complete
                         </div>
-                        {/* <input type="submit" value="Delete" className="btn btn-primary"/> */}
                         <button index={i} onClick={handleDelete} className="btn btn-primary">Delete</button>
                     </div>
                 </div>

@@ -6,7 +6,7 @@ import List from './components/List';
 function App() {
   const [list, setList] = useState([]);
 
-  const onNewList = (newList) => {
+  const onNewList = (newList) => { //updates master list anytime a component modifies the list locally
     setList(newList);
     localStorage.setItem('list', JSON.stringify(newList))
   }
@@ -14,8 +14,6 @@ function App() {
   useEffect(() => {
     const loadList = localStorage.getItem('list');
     setList(JSON.parse(loadList));
-    return () => {
-    }
   }, [])
 
   return (
