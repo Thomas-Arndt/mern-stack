@@ -1,0 +1,56 @@
+use my_first_db
+
+db.createCollection('students')
+
+db.students.insertOne({name:"Thomas", home_state:"Colorado", lucky_number:7, birthday:{month:8, day:17, year:1988}})
+
+db.students.insertOne({name:'Jennifer', home_state:'Nevada', lucky_number: 33, birthday:{month:9, day:3, year:1993}})
+
+db.students.insertOne({name:'Julie', home_state:'Colorado', lucky_number: 91, birthday:{month:1, day:18, year:1991}})
+
+db.students.insertOne({name:'Laura', home_state:'Colorado', lucky_number: 93, birthday:{month:11, day:9, year:1993}})
+
+db.students.insertOne({name:'Diane', home_state:'California', lucky_number: 7, birthday:{month:6, day:6, year:1958}})
+
+db.students.find({})
+
+db.students.find({home_state:{$in:['California', 'Washington']}})
+
+my_first_db> db.students.find({lucky_number: {$gt: 3}})
+
+db.students.find({lucky_number: {$lte: 10}})
+
+db.students.find({$and: [{lucky_number: {$gte:1}},{lucky_number: {$lte:9}}]})
+
+
+db.students.updateMany({},{$set: {interests:['coding','brunch','MongoDB']}})
+
+db.students.updateOne({name:'Thomas'}, {$push: {interests: 'biking'}})
+
+db.students.updateOne({name:'Jennifer'}, {$push: {interests: 'hiking'}})
+
+db.students.updateOne({name:'Julie'}, {$push: {interests: 'aesthetics'}})
+
+db.students.updateOne({name:'Laura'}, {$push: {interests: 'paddleboarding'}})
+
+db.students.updateOne({name:'Diane'}, {$push: {interests: 'reading'}})
+
+db.students.updateOne({name:'Thomas'}, {$push: {interests: 'taxes'}})
+
+db.students.updateOne({name:'Thomas'}, {$pull: {interests: 'taxes'}})
+
+db.students.deleteMany({home_state:'California'})
+
+db.students.deleteOne({name:'Julie'})
+
+db.students.deleteOne({lucky_number:{$gt:5}},true)
+
+db.students.updateMany({}, {$set: {number_of_belts:0}})
+
+db.students.updateMany({home_state:'Washington'}, {$inc: {number_ofnumber_of_belts:1}})
+
+db.students.updateMany({}, {$rename: {'number_of_belts':'belts_earned'}})
+
+db.students.updateMany({}, {$unset: {'lucky_number':1}})
+
+db.students.updateMany({}, {$set: {updated_on: new Date()}})
