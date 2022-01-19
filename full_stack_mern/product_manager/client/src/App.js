@@ -21,12 +21,16 @@ function App() {
       <Main>
         <BrowserRouter>
           <Switch>
-            <Route path='/products/new'>
-              <ProductForm sendSignal={signalRelay}/>
-              <ProductList signal={signal}/>
+            <Route path='/products/update/:id'>
+              <ProductForm sendSignal={signalRelay} signal={signal} mode="update"/>
+              <ProductView signal={signal} mode="update"/>
             </Route>
             <Route path='/products/:id'>
-              <ProductView/>
+              <ProductView mode="view"/>
+            </Route>
+            <Route path='/'>
+              <ProductForm sendSignal={signalRelay} signal={signal} mode="new"/>
+              <ProductList signal={signal}/>
             </Route>
           </Switch>
         </BrowserRouter>
