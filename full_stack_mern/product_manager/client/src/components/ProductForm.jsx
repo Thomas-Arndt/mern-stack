@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import Context from '../context/Context';
 
 const ProductForm = (props) => {
-
-    const { sendSignal, signal, mode } = props;
+    const context = useContext(Context);
+    const { mode } = props;
     const { id } = useParams();
     const [ title, setTitle ] = useState('');
     const [ price, setPrice ] = useState('');
@@ -14,47 +15,50 @@ const ProductForm = (props) => {
         if(id){
             axios.get(`http://localhost:8000/api/products/${id}`)
                 .then(res => {
-                    console.log(res.data)
                     setTitle(res.data.product.title)
                     setPrice(res.data.product.price)
                     setDescription(res.data.product.description)
                 })
         }
-    }, [signal]);
+        if(context.signal==='home'){
+            clearFormData();
+            context.setMode('new');
+        }
+    }, [context.signal]);
 
-    const axiosPost = () => {
-        axios.post('http://localhost:8000/api/products/new', {
+    const axiosPostPut = () => {
+        const formData = {
             title: title,
             price: price,
             description: description
-        })
-            .then(res => {
-                console.log(res)
-                sendSignal(res)
-            })
-            .catch(err => console.log(err))
+        };
+
+        let endpoint = 'http://localhost:8000/api/products';
+        if(context.mode==='new'){
+            endpoint += '/new';
+            axios.post(endpoint, formData)
+                .then(res => context.setSignal(res.data))
+                .catch(err => console.log(err))
+        }
+        else if(context.mode==='update'){
+            endpoint+=`/update/${id}`;
+            axios.put(endpoint, formData)
+                .then(res => context.setSignal(res.data))
+                .catch(err => console.log(err))
+        }
+        
     }
 
-    const axiosPut = () => {
-        axios.put(`http://localhost:8000/api/products/update/${id}`, {
-            title: title,
-            price: price,
-            description: description
-        })
-            .then(res => {
-                console.log(res)
-                sendSignal(res)
-            })
-            .catch(err => console.log(err))
+    const clearFormData = () => {
+        setTitle('');
+        setPrice('');
+        setDescription('');
     }
 
     const handleSubmit = e => {
         e.preventDefault();
-        mode==='new' && axiosPost();
-        mode==='update'&& axiosPut();
-        setTitle('');
-        setPrice('');
-        setDescription('');
+        axiosPostPut();
+        clearFormData();
     }
 
 
