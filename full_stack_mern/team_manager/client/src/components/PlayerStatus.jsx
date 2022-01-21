@@ -38,16 +38,16 @@ const PlayerStatus = () => {
                             <td>
                                 <div className="d-flex justify-content-center align-items-center gap-2">
                                     {player.status==="P"?
-                                    <button onClick={()=>handleStatusChange("P", player._id)} className="btn btn-success border border-dark col-3">Playing</button> :
-                                    <button onClick={()=>handleStatusChange("P", player._id)} className="btn btn-white border col-3">Playing</button>
+                                    <button onClick={()=>handleStatusChange("P", player._id)} className="btn btn-success border border-dark col-3 text-truncate">Playing</button> :
+                                    <button onClick={()=>handleStatusChange("P", player._id)} className="btn btn-white border col-3 text-truncate">Playing</button>
                                     }    
                                     {player.status==="NP"?
-                                    <button onClick={()=>handleStatusChange("NP", player._id)} className="btn btn-danger border border-dark text-nowrap col-3">Not Playing</button> :
-                                    <button onClick={()=>handleStatusChange("NP", player._id)} className="btn btn-white border text-nowrap col-3">Not Playing</button>
+                                    <button onClick={()=>handleStatusChange("NP", player._id)} className="btn btn-danger border border-dark text-nowrap col-3 text-truncate">Not Playing</button> :
+                                    <button onClick={()=>handleStatusChange("NP", player._id)} className="btn btn-white border text-nowrap col-3 text-truncate">Not Playing</button>
                                     }    
                                     {player.status==="U"?
-                                    <button onClick={()=>handleStatusChange("U", player._id)} className="btn btn-warning border border-dark col-3">Undecided</button> :
-                                    <button onClick={()=>handleStatusChange("U", player._id)} className="btn btn-white border col-3">Undecided</button>
+                                    <button onClick={()=>handleStatusChange("U", player._id)} className="btn btn-warning border border-dark col-3 text-truncate">Undecided</button> :
+                                    <button onClick={()=>handleStatusChange("U", player._id)} className="btn btn-white border col-3 text-truncate">Undecided</button>
                                     }    
                                 </div>
                             </td>
