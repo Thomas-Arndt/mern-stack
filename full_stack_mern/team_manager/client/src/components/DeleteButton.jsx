@@ -12,6 +12,7 @@ const DeleteButton = (props) => {
     const handleDelete = () => {
         axios.delete(`http://localhost:8000/api/players/delete/${playerid}`)
             .then(res=> {
+                setPopup(false);
                 context.setSignal(res.data);
                 history.push('/players/list');
             })
