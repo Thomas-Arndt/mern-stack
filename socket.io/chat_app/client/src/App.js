@@ -8,6 +8,8 @@ import io from 'socket.io-client';
 import Context from './context/Context';
 import Chat from './components/Chat';
 import Main from './views/Main';
+import LoginForm from './components/LoginForm';
+import RegistrationForm from './components/RegistrationForm';
 
 function App() {
   const [ uuid, setUuid ] = useState('');
@@ -28,6 +30,12 @@ function App() {
         <BrowserRouter>
           <Main>
             <Switch>
+              <Route path='/login'>
+                <LoginForm/>
+              </Route>
+              <Route path='/register'>
+                <RegistrationForm />
+              </Route>
               <Route path='/'>
                 <Chat/>
               </Route>
