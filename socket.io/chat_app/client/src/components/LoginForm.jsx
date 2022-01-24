@@ -15,9 +15,9 @@ const LoginForm = () => {
             email: email,
             password: password
         }
-        axios.post('http://localhost:8000/api/login', formData)
+        axios.post('http://localhost:8000/api/login', formData, { withCredentials: true })
             .then(res => {
-                console.log(res);
+                // console.log(res.data);
                 context.setUserEmail(res.data.userEmail);
                 context.setUserName(res.data.userName);
                 history.push('/dashboard');
@@ -47,6 +47,7 @@ const LoginForm = () => {
                     value="Login" 
                     className="btn btn-primary col-6 mx-auto mt-3"/>
             </form>
+            <p className="mt-3">Don't have an account? <a href="" onClick={(e)=>history.push('/register')}>Register</a></p>
         </div>
     )
 }

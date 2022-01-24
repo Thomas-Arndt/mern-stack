@@ -21,4 +21,7 @@ module.exports = app => {
     app.post('/api/login', UserController.login);
     app.post('/api/register', UserController.createNewUser);
     app.get('/logout', UserController.logout)
+
+    // AUTHORIZATION
+    app.get('/api/authorize', UserController.authorize);
 };

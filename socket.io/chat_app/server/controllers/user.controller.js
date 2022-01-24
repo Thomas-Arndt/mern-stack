@@ -49,6 +49,8 @@ module.exports.deleteUser = (req, res) => {
         .catch(err => res.json({ message: 'Something went wrong', error: err}));
 };
 
+
+
 // LOGIN
 module.exports.login = async (req, res) => {
     const user = await User.findOne({ email: req.body.email });
@@ -76,4 +78,16 @@ module.exports.login = async (req, res) => {
 module.exports.logout = (req, res) => {
     res.clearCookie('usertoken');
     res.sendStatus(200);
+}
+
+// AUTHORIZE
+module.exports.authorize = (req, res) => {
+    jwt.verify(req.cookies.usertoken, process.env.SECRET_KEY, (err, payload) => {
+        if (err) {
+            res.status(401).json({verified: false});
+        } 
+        else {
+            res.status(200).json({verified: true});
+        }
+    });
 }

@@ -32,7 +32,7 @@ const RegistrationForm = () => {
         console.log(formData);
         axios.post('http://localhost:8000/api/register', formData)
             .then(res => {
-                console.log(res.data)
+                // console.log(res.data)
                 context.setUserEmail(res.data.userEmail)
                 context.setUserName(res.data.userName)
                 history.push('/dashboard');
@@ -49,10 +49,11 @@ const RegistrationForm = () => {
                 <input value={firstName} onChange={(e)=>setFirstName(e.target.value)} type="text" placeholder="First Name" className="form-control" />
                 <input value={lastName} onChange={(e)=>setLastName(e.target.value)} type="text" placeholder="Last Name" className="form-control mt-3" />
                 <input value={email} onChange={(e)=>setEmail(e.target.value)} type="text" placeholder="Email" className="form-control mt-3" />
-                <input value={password} onChange={(e)=>setPassword(e.target.value)} type="text" placeholder="Password" className="form-control mt-3" />
-                <input value={confirmPassword} onChange={(e)=>setConfirmPassword(e.target.value)} type="text" placeholder="Retype Password" className="form-control mt-3" />
+                <input value={password} onChange={(e)=>setPassword(e.target.value)} type="password" placeholder="Password" className="form-control mt-3" />
+                <input value={confirmPassword} onChange={(e)=>setConfirmPassword(e.target.value)} type="password" placeholder="Retype Password" className="form-control mt-3" />
                 <input type="submit" value="Register" className="btn btn-primary col-6 mx-auto mt-3"/>
             </form>
+            <p className="mt-3">Already have an account? <a href="" onClick={(e)=>history.push('/login')}>Login</a></p>
         </div>
     )
 }

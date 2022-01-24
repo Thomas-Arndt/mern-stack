@@ -8,7 +8,7 @@ const NavBar = () => {
     const context = useContext(Context);
 
     const handleLogout = () => {
-        axios.get('http://localhost:8000/logout')
+        axios.get('http://localhost:8000/logout', { withCredentials: true })
             .then(res=>{
                 console.log(res.data);
                 context.setUserEmail('');

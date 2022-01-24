@@ -7,6 +7,7 @@ module.exports.authenticate = (req, res, next) => {
         } 
         else {
             next();
+            // res.status(200)
         }
     });
 }
