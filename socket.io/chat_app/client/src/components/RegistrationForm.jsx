@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
+import Context from '../context/Context';
 
 const RegistrationForm = () => {
+    const history = useHistory();
+    const context = useContext(Context);
     const [ firstName, setFirstName ] = useState('');
     const [ lastName, setLastName ] = useState('');
     const [ email, setEmail ] = useState('');
@@ -26,10 +30,14 @@ const RegistrationForm = () => {
             confirmPassword: confirmPassword
         }
         console.log(formData);
-        axios.post('http://localhost:8000/api/users/new', formData)
-            .then(res => console.log(res.data))
+        axios.post('http://localhost:8000/api/register', formData)
+            .then(res => {
+                console.log(res.data)
+                context.setUserEmail(res.data.userEmail)
+                context.setUserName(res.data.userName)
+                history.push('/dashboard');
+            })
             .catch(err => console.log(err.response.data.errors))
-
         clearForm();
     }
 

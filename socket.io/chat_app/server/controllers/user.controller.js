@@ -1,13 +1,22 @@
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken')
 const { User } = require('../models/user.model');
 
-// CREATE
+// CREATE / REGISTER
 module.exports.createNewUser = (req, res) => {
     User.create(req.body)
-    .then(newUser => res.json({ newUser: newUser }))
-    .catch(err => res.status(400).json(err));
-};
-
-// Read
+        .then(newUser => {
+            const userToken = jwt.sign({
+                id: newUser._id
+            }, process.env.SECRET_KEY);
+            res
+                .cookie("usertoken", userToken, {httpOnly: true})
+                .json({ msg: "Success!", userEmail: newUser.email, userName:newUser.firstName })
+        })
+        .catch(err => res.status(400).json(err));
+    };
+    
+// READ
 module.exports.findAllUsers = (req, res) => {
     User.find()
         .then(allUsers => res.json({ users: allUsers }))
@@ -20,6 +29,12 @@ module.exports.findOneUser = (req, res) => {
         .catch(err => res.json({ message: 'Something went wrong', error: err}));
 };
 
+module.exports.findOneUserByEmail = (req, res) => {
+    User.findOne({ email: req.params.email })
+        .then(user => res.json({ user: user }))
+        .catch(err => res.json({ message: 'Something went wrong', error: err}))
+};
+
 // UPDATE
 module.exports.updateOneUser = (req, res) => {
     User.findOneAndUpdate({ _id: req.params.id }, req.body, {new: true, runValidators: true})
@@ -30,6 +45,35 @@ module.exports.updateOneUser = (req, res) => {
 // DELETE
 module.exports.deleteUser = (req, res) => {
     User.deleteOne({ _id: req.params.id })
-        .then(result => res.json({ resule: result }))
+        .then(result => res.json({ result: result }))
         .catch(err => res.json({ message: 'Something went wrong', error: err}));
 };
+
+// LOGIN
+module.exports.login = async (req, res) => {
+    const user = await User.findOne({ email: req.body.email });
+
+    if(user === null){
+        return res.sendStatus(400);
+    }
+
+    const validPassword = await bcrypt.compare(req.body.password, user.password);
+
+    if(!validPassword){
+        return res.sendStatus(400);
+    }
+
+    const userToken = jwt.sign({
+        id: user._id
+    }, process.env.SECRET_KEY);
+
+    res
+        .cookie("usertoken", userToken, { httpOnly: true })
+        .json({ msg: "This response has a cookie.", userEmail: user.email, userName: user.firstName });
+}
+
+// LOGOUT
+module.exports.logout = (req, res) => {
+    res.clearCookie('usertoken');
+    res.sendStatus(200);
+}

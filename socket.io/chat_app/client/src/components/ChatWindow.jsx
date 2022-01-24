@@ -6,6 +6,7 @@ const ChatWindow = (props) => {
     const { messages } = props;
     const [ rMessages, setRMessages ] = useState([]);
 
+
     useEffect(() => {
         let revMsgs = [...messages];
         setRMessages(revMsgs.reverse());
