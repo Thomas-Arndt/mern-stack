@@ -8,12 +8,18 @@ const ChatBubble = (props) => {
     const [ bubbleStyle, setBubbleStyle ] = useState('')
 
     useEffect(() => {
-        msg.userEmail == context.userEmail ? 
-        setBubbleAlign('d-flex justify-content-end') : 
-        setBubbleAlign('d-flex justify-content-start');
-        msg.userEmail == context.userEmail ?
-        setBubbleStyle('border rounded-3 bg-success p-2') :
-        setBubbleStyle('d-flex flex-column border rounded-3 bg-info gap-1 p-2');
+        if(msg.userName != "newUser"){
+            msg.userEmail == context.userEmail ? 
+            setBubbleAlign('d-flex justify-content-end') : 
+            setBubbleAlign('d-flex justify-content-start');
+            msg.userEmail == context.userEmail ?
+            setBubbleStyle('border rounded-3 bg-success p-2') :
+            setBubbleStyle('d-flex flex-column border rounded-3 bg-info gap-1 p-2');
+        }
+        else{
+            setBubbleAlign('d-flex justify-content-center')
+            setBubbleStyle('')
+        }
     }, [msg]);
 
 
@@ -22,7 +28,7 @@ const ChatBubble = (props) => {
             <p 
                 style={{maxWidth: '80%', overflowWrap: 'break-word'}} 
                 className={bubbleStyle}>
-                {msg.userEmail != context.userEmail && 
+                {(msg.userEmail != context.userEmail && msg.userName != 'newUser') && 
                     <span style={{fontWeight: 'bold'}}>{msg.userName} said...</span>}
                 {msg.message}
             </p>

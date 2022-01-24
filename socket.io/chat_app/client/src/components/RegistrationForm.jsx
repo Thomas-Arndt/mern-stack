@@ -30,7 +30,7 @@ const RegistrationForm = () => {
             confirmPassword: confirmPassword
         }
         console.log(formData);
-        axios.post('http://localhost:8000/api/register', formData)
+        axios.post('http://localhost:8000/api/register', formData, { withCredentials: true })
             .then(res => {
                 // console.log(res.data)
                 context.setUserEmail(res.data.userEmail)

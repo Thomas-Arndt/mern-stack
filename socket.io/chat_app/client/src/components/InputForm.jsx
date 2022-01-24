@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import io from 'socket.io-client';
 import Context from '../context/Context';
 
@@ -7,6 +7,16 @@ const InputForm = () => {
     const [ userInput, setUserInput ] = useState('');
 
     const [ socket ] = useState(() => io(':8000'));
+
+    useEffect(()=> {
+        const newChatUser = {
+            userEmail: context.userEmail,
+            userName: "newUser",
+            message: `${context.userName} has joined the chat.`
+        }
+        socket.emit('new_message_from_client', newChatUser);
+        return () => socket.disconnect(true);
+    }, []);
 
     const handleChange = (e) => {
         setUserInput(e.target.value)
