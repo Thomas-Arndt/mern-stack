@@ -8,6 +8,7 @@ const LoginForm = () => {
     const context = useContext(Context);
     const [ email, setEmail ] = useState('');
     const [ password, setPassword ] = useState('');
+    const [ loginError, setLoginError ] = useState(null);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -20,9 +21,13 @@ const LoginForm = () => {
                 // console.log(res.data);
                 context.setUserEmail(res.data.userEmail);
                 context.setUserName(res.data.userName);
+                setLoginError(null)
                 history.push('/dashboard');
             })
-            .catch(err => console.log(err.response))
+            .catch(err => {
+                console.log(err.response.data);
+                setLoginError(err.response.data.message)
+            })
             setEmail('');
             setPassword('');
     }
@@ -43,6 +48,7 @@ const LoginForm = () => {
                     type="password" 
                     placeholder="Password" 
                     className="form-control mt-3" />
+                {loginError && <p className="alert alert-danger p-2">{loginError}</p>}
                 <input type="submit" 
                     value="Login" 
                     className="btn btn-primary col-6 mx-auto mt-3"/>

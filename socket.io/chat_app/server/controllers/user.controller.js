@@ -56,13 +56,13 @@ module.exports.login = async (req, res) => {
     const user = await User.findOne({ email: req.body.email });
 
     if(user === null){
-        return res.sendStatus(400);
+        return res.status(400).json({ message: "Invalid email/password." });
     }
 
     const validPassword = await bcrypt.compare(req.body.password, user.password);
 
     if(!validPassword){
-        return res.sendStatus(400);
+        return res.status(400).json({ message: "Invalid email/password." });
     }
 
     const userToken = jwt.sign({
