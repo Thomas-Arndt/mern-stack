@@ -21,9 +21,9 @@ const RoomSelect = ({ socket }) => {
                     onChange={handleChange}
                     defaultValue="Room 1"
                     className="form-control mt-3">
-                    <option value="Room 1">Room 1</option>
-                    <option value="Room 2">Room 2</option>
-                    <option value="Room 3">Room 3</option>
+                    <option value="Public Room 1">Public Room 1</option>
+                    <option value="Public Room 2">Public Room 2</option>
+                    <option value="Public Room 3">Public Room 3</option>
                 </select>
                 <h6 className="text-center mt-3">Or create a private room:</h6>
                 <input 
