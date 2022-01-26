@@ -1,21 +1,37 @@
-import React, { useState } from 'react';
-import io from 'socket.io-client';
+import React, { useState, useEffect, useContext } from 'react';
+import Context from '../context/Context';
 
-const RoomSelect = ({ onRoomChange }) => {
+const RoomSelect = ({ socket }) => {
+    const context = useContext(Context);
 
-    const [ socket ] = useState(() => io(':8000'));
+    useEffect(() => {
+        context.setRoom("Room 1");
+        socket.emit('room_change', "Room 1");
+    }, []);
 
     const handleChange = (e) => {
-        onRoomChange(e.target.value);
-        socket.emit('change_room', e.target.value);
+        // console.log(e.target.value);
+        context.setRoom(e.target.value);
     }
 
     return (
-            <select onChange={handleChange} className="form-control mt-3">
-                <option value="room1">Room 1</option>
-                <option value="room2">Room 2</option>
-                <option value="room3">Room 3</option>
-            </select>
+            <div>
+                <h6 className="text-center mt-3">Choose a public room:</h6>
+                <select
+                    onChange={handleChange}
+                    defaultValue="Room 1"
+                    className="form-control mt-3">
+                    <option value="Room 1">Room 1</option>
+                    <option value="Room 2">Room 2</option>
+                    <option value="Room 3">Room 3</option>
+                </select>
+                <h6 className="text-center mt-3">Or create a private room:</h6>
+                <input 
+                    type="text" 
+                    // value={context.room} 
+                    onChange={(e)=>context.setRoom(e.target.value)}
+                    className="form-control"/>
+            </div>
     )
 }
 

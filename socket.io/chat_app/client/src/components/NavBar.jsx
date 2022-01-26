@@ -3,16 +3,17 @@ import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import Context from '../context/Context';
 
-const NavBar = () => {
+const NavBar = ({socket}) => {
     const history = useHistory();
     const context = useContext(Context);
 
     const handleLogout = () => {
         axios.get('http://localhost:8000/logout', { withCredentials: true })
             .then(res=>{
-                console.log(res.data);
+                // console.log(res.data);
                 context.setUserEmail('');
                 context.setUserName('');
+                socket.disconnect(true);
                 history.push('/');
             })
     }

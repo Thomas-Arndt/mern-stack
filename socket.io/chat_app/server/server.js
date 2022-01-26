@@ -34,7 +34,17 @@ io.on("connection", socket => {
     io.emit('new_user_connect', socket.id)
 
     socket.on('new_message_from_client', msg => {
-        io.emit('new_message_from_server', msg);
+        // console.log(msg.room);
+        // console.log(msg.msgData);
+        io.in(msg.room).emit('new_message_from_server', msg.msgData);
     })
 
+    socket.on('room_change', room => {
+        console.log("room chaged to "+room);
+        socket.join(room);
+    })
+
+    socket.on('disconnect', () => {
+        console.log(`Socket disconnected.`);
+    });
 })

@@ -16,19 +16,25 @@ import UserDashboard from './components/UserDashboard';
 function App() {
   const [ userEmail, setUserEmail ] = useState('');
   const [ userName, setUserName ] = useState('');
+  const [ room, setRoom ] = useState('Room 1');
   const [ socket ] = useState(() => io(':8000'));
 
   useEffect(() => {
     socket.on('connection_ok', data => {
-      console.log(data);
-      console.log(socket.id);
+      // console.log(data);
+      // console.log(socket.id);
     });
     return () => socket.disconnect(true);
   }, []);
 
   return (
     <div className="App">
-      <Context.Provider value={{userEmail, setUserEmail, userName, setUserName}}>
+      <Context.Provider 
+        value={{
+          userEmail, setUserEmail, 
+          userName, setUserName,
+          room, setRoom
+        }}>
         <BrowserRouter>
           <Main>
             <Switch>
@@ -36,12 +42,12 @@ function App() {
                 <RegistrationForm />
               </Route>
               <Route path='/dashboard'>
-                <NavBar />
-                <UserDashboard />
+                <NavBar socket={socket}/>
+                <UserDashboard socket={socket}/>
               </Route>
               <Route path='/chat'>
-                <NavBar />
-                <Chat/>
+                <NavBar socket={socket}/>
+                <Chat socket={socket}/>
               </Route>
               <Route path='/'>
                 <LoginForm/>
