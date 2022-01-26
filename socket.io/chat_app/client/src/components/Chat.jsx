@@ -10,16 +10,16 @@ const Chat = () => {
     const [ messages, setMessages ] = useState([]);
 
     const [ socket ] = useState(() => io(':8000'));
-
+    
     useEffect(() => {
         axios.get('http://localhost:8000/api/authorize', { withCredentials: true })
             .then(res=>{
                 // console.log(res);
-                socket.on('new_message_from_server', msg => 
+                socket.on('new_message_from_server', msg => {
                     setMessages(messages => {
                         return [...messages, msg];
                     })
-                );
+                });
             })
             .catch(err=>history.push('/login'))
         return () => socket.disconnect(true);
@@ -27,7 +27,7 @@ const Chat = () => {
 
     return (
             <div style={{height: 'fit-content'}} 
-                className="mx-auto d-flex flex-column align-items-center col-6 border border-success rounded-3 shadow p-3 mt-4">
+                className="mx-auto d-flex flex-column align-items-center col-6 border border-success rounded-3 shadow p-3 mt-5">
                 <ChatWindow messages={messages}/>
                 <InputForm />
             </div>

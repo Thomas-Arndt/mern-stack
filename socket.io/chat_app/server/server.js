@@ -2,7 +2,6 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const port = 8000;
 require('dotenv').config();
 const cookieParser = require('cookie-parser');
 
@@ -16,13 +15,13 @@ app.use(
     express.urlencoded({extended: true}), 
     cookieParser()
     );
-
+    
 // ROUTES
-const ChatRoomRoutes = require('./routes/chatroom.routes');
-ChatRoomRoutes(app);
-
+require('./routes/chatroom.routes')(app);
+    
 // PORT
-const server = app.listen(port, () => console.log('Listening on port '+port+'...'));
+const port = 8000;
+const server = app.listen(port, () => console.log(`Listening on port ${port}...`));
 
 // IMPORT/CONFIGURE WEBSOCKET
 const io = require('socket.io')(server, { cors: true });
@@ -37,4 +36,5 @@ io.on("connection", socket => {
     socket.on('new_message_from_client', msg => {
         io.emit('new_message_from_server', msg);
     })
+
 })

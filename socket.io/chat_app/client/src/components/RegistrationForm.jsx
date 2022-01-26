@@ -27,18 +27,13 @@ const RegistrationForm = () => {
     }
 
     const handleChange = (e) => {
-        
         e.target.name==="firstName" && setFirstName(e.target.value)
         e.target.name==="lastName" && setLastName(e.target.value)
         e.target.name==="email" && setEmail(e.target.value)
         e.target.name==="password" && setPassword(e.target.value)
         e.target.name==="confirmPassword" && setConfirmPassword(e.target.value)
         if(e.target.name==="firstName"){
-            if(e.target.value.length === 0){
-                setFirstNameError(null);
-                setValidForm(false);
-            }
-            else if(e.target.value.length < 3){
+            if(e.target.value.length !== 0 && e.target.value.length < 3){
                 setFirstNameError("First name must be at least 3 characters.");
                 setValidForm(false);
             }
@@ -48,11 +43,7 @@ const RegistrationForm = () => {
             }
         }
         if(e.target.name==="lastName"){
-            if(e.target.value.length === 0){
-                setLastNameError(null);
-                setValidForm(false);
-            }
-            else if(e.target.value.length < 3){
+            if(e.target.value.length !== 0 && e.target.value.length < 3){
                 setLastNameError("Last name must be at least 3 characters.");
                 setValidForm(false);
             }
@@ -72,11 +63,7 @@ const RegistrationForm = () => {
             }
         }
         if(e.target.name==="password"){
-            if(e.target.value.length === 0){
-                setPasswordError(null);
-                setValidForm(false);
-            }
-            else if(e.target.value.length < 8){
+            if(e.target.value.length !== 0 && e.target.value.length < 8){
                 setPasswordError("Password must be at least 8 characters.");
                 setValidForm(false);
             }
@@ -86,11 +73,7 @@ const RegistrationForm = () => {
             }
         }
         if(e.target.name==="confirmPassword"){
-            if(e.target.value.length === 0){
-                setConfirmPasswordError(null);
-                setValidForm(false);
-            }
-            else if(e.target.value != password){
+            if(e.target.value.length !== 0 && e.target.value != password){
                 setConfirmPasswordError("Passwords must match.");
                 setValidForm(false);
             }
@@ -119,12 +102,13 @@ const RegistrationForm = () => {
                 history.push('/dashboard');
             })
             .catch(err => {
-                console.log(err.response.data.errors);
-                setFirstNameError(err.response.data.errors.firstName.message);
-                setLastNameError(err.response.data.errors.lastName.message);
-                setEmailError(err.response.data.errors.email.message);
-                setPasswordError(err.response.data.errors.password.message);
-                setConfirmPasswordError(err.response.data.errors.confirmPassword.message);
+                console.log(err.response);
+                const errResponse = err.response.data.errors;
+                errResponse.firstName && setFirstNameError(errResponse.firstName.message);
+                errResponse.lastName && setLastNameError(errResponse.lastName.message);
+                errResponse.email && setEmailError(errResponse.email.message);
+                errResponse.password && setPasswordError(errResponse.password.message);
+                errResponse.confirmPassword && setConfirmPasswordError(errResponse.confirmPassword.message);
                 setValidForm(false);
             })
         clearForm();

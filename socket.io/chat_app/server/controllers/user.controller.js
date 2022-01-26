@@ -4,16 +4,23 @@ const { User } = require('../models/user.model');
 
 // CREATE / REGISTER
 module.exports.createNewUser = (req, res) => {
-    User.create(req.body)
-        .then(newUser => {
-            const userToken = jwt.sign({
-                id: newUser._id
-            }, process.env.SECRET_KEY);
-            res
-                .cookie("usertoken", userToken, {httpOnly: true})
-                .json({ msg: "Success!", userEmail: newUser.email, userName:newUser.firstName })
+    User.exists({ email: req.body.email})
+        .then(userExists => {
+            if(userExists){
+                return Promise.reject({errors:{confirmPassword:{message:'Invalid email/password.'}}})
+            }
+            return User.create(req.body)
+                .then(newUser => {
+                    const userToken = jwt.sign({
+                        id: newUser._id
+                    }, process.env.SECRET_KEY);
+                    res
+                        .cookie("usertoken", userToken, {httpOnly: true})
+                        .json({ msg: "Success!", userEmail: newUser.email, userName:newUser.firstName })
+                })
+                .catch(err => res.status(400).json(err));
         })
-        .catch(err => res.status(400).json(err));
+        .catch(err=>res.status(400).json(err))
     };
     
 // READ
@@ -49,6 +56,7 @@ module.exports.deleteUser = (req, res) => {
         .catch(err => res.json({ message: 'Something went wrong', error: err}));
 };
 
+// UNIQUE USER VALIDATION
 
 
 // LOGIN
